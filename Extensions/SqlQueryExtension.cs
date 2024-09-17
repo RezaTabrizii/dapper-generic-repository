@@ -6,8 +6,8 @@ namespace DapperGenericRepository.Extensions
 {
     public static class SqlQueryExtension
     {
-        public static void ApplyFilter(this string query, ref DynamicParameters param, List<string> conditionLeftSide, List<string> comparisonOperators,
-            List<string> conditionRightSide, out string modifiedQuery, List<string> logicalOperators = null)
+        public static void ApplyFilter(this string query, ref DynamicParameters param, List<string> conditionLeftSide, List<ComparisonOperators> comparisonOperators,
+            List<string> conditionRightSide, out string modifiedQuery, List<LogicOperators> logicalOperators = null)
         {
             query = $"SELECT * FROM ({query}) As BaseQuery ";
 

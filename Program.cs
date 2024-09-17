@@ -68,7 +68,7 @@ namespace DapperGenericRepository
             await _personRepository.ReplaceAsync(person, new ConditionParams
             {
                 ConditionLeftSide = ["FirstName"],
-                ComparisonOperators = ["="],
+                ComparisonOperators = [ComparisonOperators.Equal],
                 ConditionRightSide = ["a"],
             });
 
@@ -79,13 +79,13 @@ namespace DapperGenericRepository
                     new()
                     {
                         ConditionLeftSide = ["EmailAddress"],
-                        ComparisonOperators = ["="],
+                        ComparisonOperators = [ComparisonOperators.Equal],
                         ConditionRightSide = ["Xleylo@gmail.com"],
                     },
                     new()
                     {
                         ConditionLeftSide = ["EmailAddress"],
-                        ComparisonOperators = ["="],
+                        ComparisonOperators = [ComparisonOperators.Equal],
                         ConditionRightSide = ["AsgarMedusa@gmail.com"],
                     }
                 ]);
@@ -105,7 +105,7 @@ namespace DapperGenericRepository
             }, new ConditionParams
             {
                 ConditionLeftSide = ["FirstName"],
-                ComparisonOperators = ["="],
+                ComparisonOperators = [ComparisonOperators.Equal],
                 ConditionRightSide = ["Satoshi"],
             });
 
@@ -136,13 +136,13 @@ namespace DapperGenericRepository
                    new()
                    {
                        ConditionLeftSide = ["FirstName"],
-                       ComparisonOperators = ["="],
+                       ComparisonOperators = [ComparisonOperators.Equal],
                        ConditionRightSide = ["Satoshi"],
                    },
                     new()
                     {
                         ConditionLeftSide = ["FirstName"],
-                        ComparisonOperators = ["="],
+                        ComparisonOperators = [ComparisonOperators.Equal],
                         ConditionRightSide = ["Yui"],
                     }
                 ]);
@@ -152,9 +152,9 @@ namespace DapperGenericRepository
             await _personRepository.DeleteAsync(new ConditionParams
             {
                 ConditionLeftSide = ["FirstName", "Id"],
-                ComparisonOperators = ["=", "="],
+                ComparisonOperators = [ComparisonOperators.Equal, ComparisonOperators.Equal],
                 ConditionRightSide = ["Yui", "9789305"],
-                LogicOperators = ["or"]
+                LogicOperators = [LogicOperators.Or]
             });
 
             var personData = await _personRepository.FindOneWithQueryAsync("SELECT * FROM PEOPLE WHERE LastName = @LastName",
@@ -171,9 +171,9 @@ namespace DapperGenericRepository
                 OrderByDescending = false,
                 OrderColumnName = "FirstName",
                 ConditionLeftSide = ["FirstName", "Id"],
-                ComparisonOperators = ["=", "="],
+                ComparisonOperators = [ComparisonOperators.Equal, ComparisonOperators.Equal],
                 ConditionRightSide = ["Yui", "8785715"],
-                LogicOperators = ["or"]
+                LogicOperators = [LogicOperators.Or]
             });
 
             var personsData1 = await _personRepository.GetWithStoreProcedureAsync("spPeople_Get", new { PersonId = "8785715" });

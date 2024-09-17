@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DapperGenericRepository.Extensions;
 using DapperGenericRepository.Models.Parameters;
 using DapperGenericRepository.Models.Results;
 using System.Text;
@@ -11,15 +12,6 @@ namespace DapperGenericRepository.Utilities
             IEnumerable<string> validColumns = null, int parametersIndex = 0)
         {
             #region Validation
-
-            List<string> validConditions = ["=", "!=", ">", "<", ">=", "<="];
-            if (!conditionParams.ComparisonOperators.All(validConditions.Contains))
-                throw new Exception("Comparison operators are invalid");
-
-            List<string> validComparisonOperators = ["and", "or"];
-            if (conditionParams.LogicOperators != null
-                && !conditionParams.LogicOperators.All(validComparisonOperators.Contains))
-                throw new Exception("Logical Operator is invalid");
 
             if (validColumns != null && conditionParams.ConditionLeftSide.Count >= 1
                 && !conditionParams.ConditionLeftSide.All(validColumns.Contains))
@@ -42,10 +34,10 @@ namespace DapperGenericRepository.Utilities
             DynamicParameters parameters = new();
             foreach (var (columnName, currentIndex) in conditionParams.ConditionLeftSide.Select((colName, index) => (colName, index)))
             {
-                whereClause.Append($"[{columnName}] {conditionParams.ComparisonOperators[currentIndex]} @rightSideValue_{currentIndex}_{parametersIndex}");
+                whereClause.Append($"[{columnName}] {conditionParams.ComparisonOperators[currentIndex].ToDisplay()} @rightSideValue_{currentIndex}_{parametersIndex}");
 
                 if (conditionParams.ComparisonOperators.Count - 2 >= currentIndex)
-                    whereClause.Append($" {conditionParams.LogicOperators[currentIndex]} ");
+                    whereClause.Append($" {conditionParams.LogicOperators[currentIndex].ToDisplay()} ");
 
                 parameters.Add($"rightSideValue_{currentIndex}_{parametersIndex}", $"{conditionParams.ConditionRightSide[currentIndex]}");
             }
